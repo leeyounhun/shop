@@ -1,15 +1,17 @@
 package com.lyh.shop.entity;
 
 import com.lyh.shop.constant.ItemSellStatus;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "item")
-@Data
-public class Item {
+@Getter
+@Setter
+public class Item extends BaseEntity{
     @Id
     @Column(name = "item_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +33,4 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
 
-    private LocalDateTime regTime;
-
-    private LocalDateTime updateTime;
 }
