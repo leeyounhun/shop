@@ -3,13 +3,16 @@ package com.lyh.shop.entity;
 import com.lyh.shop.constant.Role;
 import com.lyh.shop.dto.MemberFormDto;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "member")
-@Data
+@Getter
+@Setter
 public class Member extends BaseEntity{
     @Id
     @Column(name = "member_id")
