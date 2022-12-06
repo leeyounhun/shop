@@ -55,12 +55,6 @@ public class ItemRestController {
             return modelAndView;
         }
 
-        if (itemImgFileList.get(0).isEmpty() && itemFormDto.getId() == null) {
-            modelAndView.addObject("errorMessage", "첫번째 상품 이미지는 필수입니다.");
-            modelAndView.setViewName("item/itemForm");
-            return modelAndView;
-        }
-
         try {
             itemService.updateItem(itemFormDto, itemImgFileList);
         } catch (Exception e) {
