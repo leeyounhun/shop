@@ -32,7 +32,7 @@ public class SecurityConfig{
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                 .logoutSuccessUrl("/");
         http.authorizeRequests()
-                .mvcMatchers("/", "/members/**", "/item/**", "/image/**").permitAll()
+                .mvcMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
         http.exceptionHandling()

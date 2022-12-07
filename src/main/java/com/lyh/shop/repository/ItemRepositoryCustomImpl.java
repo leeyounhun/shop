@@ -2,8 +2,11 @@ package com.lyh.shop.repository;
 
 import com.lyh.shop.constant.ItemSellStatus;
 import com.lyh.shop.dto.ItemSearchDto;
+import com.lyh.shop.dto.MainItemDto;
+import com.lyh.shop.dto.QMainItemDto;
 import com.lyh.shop.entity.Item;
 import com.lyh.shop.entity.QItem;
+import com.lyh.shop.entity.QItemImg;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,7 +21,7 @@ import java.util.List;
 
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 
-    private JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
     public ItemRepositoryCustomImpl(EntityManager em) {
         this.jpaQueryFactory = new JPAQueryFactory(em);
@@ -65,6 +68,31 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .limit(pageable.getPageSize())
                 .fetch();
 
+        return new PageImpl<>(content, pageable, content.size());
+    }
+
+    private BooleanExpression itemNameLike(String searchQuery) {
+        return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemName.like("%" + searchQuery + "%");
+    }
+
+    @Override
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+        List<MainItemDto> content = jpaQueryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id, item.itemName, item.itemDetail, itemImg.imgUrl, item.itemPrice
+                        )
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repImgYn.eq("Y"))
+                .where(itemNameLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
         return new PageImpl<>(content, pageable, content.size());
     }
 }
