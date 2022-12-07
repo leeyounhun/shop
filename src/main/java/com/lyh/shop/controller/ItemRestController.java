@@ -14,12 +14,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/item")
 public class ItemRestController {
 
     private final ItemService itemService;
 
-    @PostMapping
+    @PostMapping("/admin/item")
     public ModelAndView itemNew(@Valid ItemFormDto itemFormDto, BindingResult bindingResult
             , @RequestParam("itemImgFile")List<MultipartFile> itemImgFileList) {
         ModelAndView modelAndView = new ModelAndView();
@@ -46,7 +45,7 @@ public class ItemRestController {
         return modelAndView;
     }
 
-    @PutMapping("/{itemId}")
+    @PutMapping("/admin/item/{itemId}")
     public ModelAndView itemUpdate(@Valid ItemFormDto itemFormDto, BindingResult bindingResult
             , @RequestParam("itemImgFile")List<MultipartFile> itemImgFileList){
         ModelAndView modelAndView = new ModelAndView();
