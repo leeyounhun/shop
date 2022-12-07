@@ -1,6 +1,7 @@
 package com.lyh.shop.controller;
 
 import com.lyh.shop.dto.ItemFormDto;
+import com.lyh.shop.entity.Item;
 import com.lyh.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
@@ -45,6 +46,15 @@ public class ItemRestController {
         return modelAndView;
     }
 
+    @GetMapping("/item/{itemId}")
+    public ModelAndView itemDetail(@PathVariable("itemId") Long itemId) {
+        ModelAndView modelAndView = new ModelAndView();
+        ItemFormDto itemFormDto = itemService.getItemDetail(itemId);
+        modelAndView.addObject("item", itemFormDto);
+        modelAndView.setViewName("item/itemDetail");
+        return modelAndView;
+    }
+
     @PutMapping("/admin/item/{itemId}")
     public ModelAndView itemUpdate(@Valid ItemFormDto itemFormDto, BindingResult bindingResult
             , @RequestParam("itemImgFile")List<MultipartFile> itemImgFileList){
@@ -64,5 +74,10 @@ public class ItemRestController {
 
         modelAndView.setViewName("redirect:/");
         return modelAndView;
+    }
+
+    @DeleteMapping("/admin/item/{itemId}")
+    public void deleteItem(@PathVariable("itemId") Long itemId) {
+        itemService.delete(itemId);
     }
 }

@@ -61,7 +61,7 @@ public class ItemService {
         itemFormDto.setItemImgDtoList(itemImgDtoList);
         return itemFormDto;
     }
-
+    @Transactional
     public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
         Item item = itemRepository.findById(itemFormDto.getId()).orElseThrow(EntityNotFoundException::new);
         item.updateItem(itemFormDto);
@@ -81,6 +81,11 @@ public class ItemService {
     @Transactional(readOnly = true)
     public Page<MainItemDto> getMainItemPage (ItemSearchDto itemSearchDto, Pageable pageable) {
         return itemRepository.getMainItemPage(itemSearchDto, pageable);
+    }
+    @Transactional
+    public void delete(Long itemId) {
+        Item item = itemRepository.findById(itemId).orElseThrow(EntityNotFoundException::new);
+        itemRepository.delete(item);
     }
 
 }
