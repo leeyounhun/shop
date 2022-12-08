@@ -2,6 +2,7 @@ package com.lyh.shop.entity;
 
 import com.lyh.shop.constant.ItemSellStatus;
 import com.lyh.shop.dto.ItemFormDto;
+import com.lyh.shop.exception.OutOfStockException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -42,6 +43,13 @@ public class Item extends BaseEntity{
         this.itemStock = itemFormDto.getItemStock();
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
+
+    public void removeStock(int itemStock){
+        int restStock = this.itemStock - itemStock;
+        if (restStock < 0)
+            throw new OutOfStockException("상품의 제고가 부족합니다.");
+        this.itemStock = restStock;
     }
 
 }
