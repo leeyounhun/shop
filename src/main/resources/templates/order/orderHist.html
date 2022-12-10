@@ -16,7 +16,7 @@
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            var url = "/order/" + orderId + "/cancel";
+            var url = "/order/" + orderId;
             var paramData = {
                 orderId : orderId,
             };
@@ -25,7 +25,7 @@
 
             $.ajax({
                 url      : url,
-                type     : "POST",
+                type     : "DELETE",
                 contentType : "application/json",
                 data     : param,
                 beforeSend : function(xhr){

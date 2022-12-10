@@ -52,4 +52,8 @@ public class Item extends BaseEntity{
         this.itemStock = restStock;
     }
 
+    public void addStock(int itemStock){
+        this.itemStock += itemStock;
+    }
+
 }

@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -40,6 +37,15 @@ public class OrderRestController {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>(orderId, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<String> cancelOrder(@PathVariable("orderId") Long orderId, Principal principal) {
+        if (!orderService.validateOrder(orderId, principal.getName()))
+            return new ResponseEntity<String>("취소 권한이 없습니다", HttpStatus.FORBIDDEN);
+
+        orderService.cancelOrder(orderId);
+        return new ResponseEntity<String>(orderId.toString(), HttpStatus.OK);
     }
 
 }
