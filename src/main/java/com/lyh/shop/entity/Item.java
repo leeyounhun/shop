@@ -48,7 +48,7 @@ public class Item extends BaseEntity{
     public void removeStock(int itemStock){
         int restStock = this.itemStock - itemStock;
         if (restStock < 0)
-            throw new OutOfStockException("상품의 제고가 부족합니다.");
+            throw new OutOfStockException("상품의 재고가 부족합니다.");
         this.itemStock = restStock;
     }
 

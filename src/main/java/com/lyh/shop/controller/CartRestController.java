@@ -56,7 +56,7 @@ public class CartRestController {
 
         if(count <= 0){
             return new ResponseEntity<String>("최소 1개 이상 담아주세요", HttpStatus.BAD_REQUEST);
-        } else if(!cartService.validateCartItem(cartItemId, principal.getName())){
+        } else if(cartService.validateCartItem(cartItemId, principal.getName())){
             return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
@@ -66,7 +66,7 @@ public class CartRestController {
 
     @DeleteMapping("/{cartItemId}")
     public @ResponseBody ResponseEntity<String> deleteCartItem(@PathVariable("cartItemId") Long cartItemId, Principal principal){
-        if (!cartService.validateCartItem(cartItemId, principal.getName()))
+        if (cartService.validateCartItem(cartItemId, principal.getName()))
             return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
         cartService.deleteCartItem(cartItemId);
         return new ResponseEntity<String>(cartItemId.toString(), HttpStatus.OK);
